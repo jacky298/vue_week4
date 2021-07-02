@@ -63,152 +63,12 @@
             
           </tbody>
         </table>
+        
+        <pagination :pagination="pagination" @emit-page="getData"></pagination>
       </div>
+      
       <!-- Modal -->
-
-      <!-- <div id="productModal" ref="productModal" class="modal fade" tabindex="-1" aria-labelledby="productModalLabel"
-           aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-          <div class="modal-content border-0">
-            <div class="modal-header bg-dark text-white">
-              <h5 id="productModalLabel" class="modal-title">
-                <span v-if="checkNew">新增產品</span>
-                <span v-else>編輯產品</span>
-              </h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <div class="row">
-                <div class="col-sm-4">
-                    <div class="mb-1">
-                      
-                        <div class="form-group">
-                          <label for="imageUrl">輸入圖片網址</label>
-                          <input v-model="tempProducts.imageUrl" type="text" class="form-control" 
-                              placeholder="請輸入圖片連結">
-                        </div>
-                      <img class="img-fluid" :src="tempProducts.imageUrl" alt="">
-                      
-                    </div>
-
-                    <div class="mb-1">多圖新增</div>
-                    <div v-if="Array.isArray(tempProducts.imageUrls)">
-                      <div class="mb-1" v-for="(image, key) in tempProducts.imageUrls" :key="key">
-                        <div class="form-group">
-                          <label for="imageUrls">輸入圖片網址</label>
-                          <input type="text" class="form-control" v-model="tempProducts.imageUrls[key]"
-                              placeholder="請輸入圖片連結">
-                        </div>
-                        <img class="img-fluid" :src="image" alt="">
-                      </div>
-                      
-                      <div v-if="!tempProducts.imageUrls.length || tempProducts.imageUrls[tempProducts.imageUrls.length - 1]">
-                        <button class="btn btn-outline-primary btn-sm d-block w-100" @click="tempProducts.imageUrls.push('')">
-                          新增圖片
-                        </button>
-                      </div>
-                      <div v-else>
-                        <button class="btn btn-outline-danger btn-sm d-block w-100" @click="tempProducts.imageUrls.pop()">
-                          刪除圖片
-                        </button>
-                      </div>
-                    </div>
-                    <div v-else>
-                      <button class="btn btn-outline-primary btn-sm d-block w-100" @click="createImages">
-                        新增圖片喔
-                      </button>
-                    </div>
-                </div>
-                <div class="col-sm-8">
-                  <div class="form-group">
-                    <label for="title">標題</label>
-                    <input id="title" type="text" class="form-control" v-model ="tempProducts.title" placeholder="請輸入標題">
-                  </div>
-
-                  <div class="row">
-                    <div class="form-group col-md-6">
-                      <label for="category">分類</label>
-                      <input id="category" type="text" class="form-control" v-model="tempProducts.category"
-                             placeholder="請輸入分類">
-                    </div>
-                    <div class="form-group col-md-6">
-                      <label for="price">單位</label>
-                      <input id="unit" type="text" class="form-control" v-model="tempProducts.unit" placeholder="請輸入單位">
-                    </div>
-                  </div>
-
-                  <div class="row">
-                    <div class="form-group col-md-6">
-                      <label for="origin_price">原價</label>
-                      <input id="origin_price" type="number" min="0" class="form-control" v-model.number="tempProducts.origin_price" placeholder="請輸入原價">
-                    </div>
-                    <div class="form-group col-md-6">
-                      <label for="price">售價</label>
-                      <input id="price" type="number" min="0" class="form-control" v-model.number="tempProducts.price"
-                             placeholder="請輸入售價">
-                    </div>
-                  </div>
-                  <hr>
-
-                  <div class="form-group">
-                    <label for="description">產品描述</label>
-                    <textarea id="description" type="text" class="form-control" v-model="tempProducts.description"
-                              placeholder="請輸入產品描述">
-                    </textarea>
-                  </div>
-                  <div class="form-group">
-                    <label for="content">說明內容</label>
-                    <textarea id="description" type="text" class="form-control" v-model="tempProducts.content"
-                              placeholder="請輸入說明內容">
-                    </textarea>
-                  </div>
-                  <div class="form-group">
-                    <div class="form-check">
-                      <input id="is_enabled" class="form-check-input" type="checkbox"
-                             :true-value="1" :false-value="0" v-model="tempProducts.is_enabled">
-                      <label class="form-check-label" for="is_enabled">是否啟用</label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" @click="updateData()">
-                取消
-              </button>
-              <button type="button" class="btn btn-primary" @click="updateData()">
-                確認
-              </button>
-            </div>
-          </div>
-        </div>
-      </div> -->
-      <!-- <div id="delProductModal" ref="delProductModal" class="modal fade" tabindex="-1"
-           aria-labelledby="delProductModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content border-0">
-            <div class="modal-header bg-danger text-white">
-              <h5 id="delProductModalLabel" class="modal-title">
-                <span>刪除產品</span>
-              </h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              是否刪除
-              <strong class="text-danger"></strong> 商品(刪除後將無法恢復)。
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                取消
-              </button>
-              <button type="button" class="btn btn-danger" @click="delProduct()">
-                確認刪除
-              </button>
-            </div>
-          </div>
-        </div>
-      </div> -->
-      <product_modal :products="tempProducts" :check="checkNew" @update-page="getData"></product_modal>
+      <product_modal :products="tempProducts" :check-new="checkNew" @update-page="getData"></product_modal>
       <del_modal :item="tempProducts" @update-page="getData"></del_modal>
       <!-- Modal -->
     </div>
@@ -353,7 +213,7 @@
             </div>
             <div class="modal-body">
               是否刪除
-              <strong class="text-danger"></strong> 商品(刪除後將無法恢復)。
+              <strong class="text-danger"></strong> {{item.title}}(刪除後將無法恢復)。
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
@@ -368,7 +228,24 @@
       </div>
     </script>
 
-    <script type="text/template" ></script>
+    <script type="text/template" id="pagination">
+      <nav aria-label="Page navigation example">
+        <ul class="pagination">
+          <li class="page-item" :class="{'disabled':pagination.current_page === 1}">
+            <a class="page-link" href="#" aria-label="Previous" @click="changePage(pagination.current_page-1)">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          <li class="page-item" v-for="item in pagination.total_pages" :class="{ active : item === pagination.current_page }" ><span class="page-link" v-if="item === pagination.current_page">{{item}}</span><a class="page-link" href="#" v-else @click="changePage(item)">{{item}}</a></li>
+          
+          <li class="page-item" :class="{ 'disabled' : pagination.current_page === pagination.total_pages}">
+            <a class="page-link" href="#" aria-label="Next" @click="changePage(pagination.current_page+1)">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </script>
 
     <script type="module">
       const url = 'https://vue3-course-api.hexschool.io';
@@ -383,17 +260,23 @@
             tempProducts:{
               imageUrl:[]
             },
-            checkNew:""
+            pagination:{}  
+            ,
+            checkNew:false
           }
         },
         methods:{
-          getData(){
-            axios.get(`${url}/api/${apiPath}/admin/products`)
+          //預設1
+          getData(page){
+            axios.get(`${url}/api/${apiPath}/admin/products?page=${page}`)
             .then(res=>{
               //console.log(res.data);
               if(res.data.success){
-                this.products = res.data.products;
+                const {products,pagination} = res.data;
+                this.products = products;
+                this.pagination = pagination;
                 console.log(this.products);
+                console.log(this.pagination);
               }else{
                 alert(res.data.success);
               }              
@@ -402,17 +285,20 @@
           chooseMode(isNew,item){
             switch(isNew){
               case 'new':
-                checkNew = true;
                 this.tempProducts={}
+                this.checkNew = true;
+                
+                console.log('觸發')
                 addModal.show();
                 break;
               case 'edit':
-                checkNew = false;
                 this.tempProducts = {...item};
+                this.checkNew = false;
+              
                 addModal.show();
                 break;
               case 'del':
-                checkNew=false;
+                this.checkNew=false;
                 this.tempProducts = {...item };
                 delModal.show();
                 
@@ -429,25 +315,37 @@
           this.getData();
         },
         
-      });
-
-      app.component('pagination',)
-      app.component('product_modal',{
+      })
+      .component('pagination',{
+        data(){
+          return{}
+        },
+        props:['pagination'],
+        methods:{
+          changePage(page_num){
+            this.$emit('emitPage',page_num);
+            
+          }
+        },
+        template:`#pagination`,
+        created(){},
+        mounted(){}
+      })
+      .component('product_modal',{
         data(){
           return{
-            products:{},
-            check:"",
-            
           }
           
         },
         props:['products','checkNew'],
+        
         methods:{
           updateData(){
-            //checking the variable of chekcNew status
+            console.log(this.checkNew);
+            //checking the variable of checkNew status
            let api = `${url}/api/${apiPath}/admin/product`;
            let http;
-           if(this.check){
+           if(this.checkNew){
              http = 'post';
            }else{
              api = `${url}/api/${apiPath}/admin/product/${this.products.id}`;
@@ -483,9 +381,11 @@
         }
         
       })
-      app.component('del_modal',{
+      .component('del_modal',{
         data(){
-          item:{}
+          return{
+            
+          }
         },
         props:['item'],
         methods:{
